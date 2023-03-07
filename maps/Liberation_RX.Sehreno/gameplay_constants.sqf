@@ -1,4 +1,4 @@
-GRLIB_save_key = "GREUH_LIBERATION_DAKPEK_SAVEGAME_PSK";	// change this value if you want different savegames on different map
+GRLIB_save_key = "GREUH_LIBERATION_SEHRENO_SAVEGAME_PSK";	// change this value if you want different savegames on different map
 GRLIB_side_resistance = RESISTANCE;
 GRLIB_side_civilian = CIVILIAN;
 GRLIB_respawn_marker = "respawn_west";
