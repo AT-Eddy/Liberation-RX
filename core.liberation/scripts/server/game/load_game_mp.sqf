@@ -7,6 +7,7 @@ date_month = date select 1;
 date_day = date select 2;
 blufor_sectors = [];
 GRLIB_all_fobs = [];
+GRLIB_all_outposts = [];
 GRLIB_mobile_respawn = [];
 buildings_to_load= [];
 combat_readiness = 0;
@@ -47,6 +48,7 @@ GRLIB_player_context = [];
 resources_intel = 0;
 GRLIB_player_scores = [];
 GRLIB_garage = [];
+GRLIB_warehouse = [];
 
 private _no_kill_handler_classnames = [FOB_typename, FOB_outpost];
 { _no_kill_handler_classnames pushback (_x select 0) } foreach buildings;
@@ -89,15 +91,9 @@ if ( !isNil "greuh_liberation_savegame" ) then {
 	time_of_day = greuh_liberation_savegame select 3;
 	combat_readiness = greuh_liberation_savegame select 4;
 	GRLIB_garage = greuh_liberation_savegame select 5;
-	if (typeName GRLIB_garage != "ARRAY") then {GRLIB_garage = []};
-
 	_side_west = greuh_liberation_savegame select 6;
 	_side_east = greuh_liberation_savegame select 7;
-	if ( GRLIB_force_load == 0 && typeName _side_west == "STRING" && typeName _side_east == "STRING" ) then {
-		if ( _side_west != GRLIB_mod_west || _side_east != GRLIB_mod_east ) exitWith {
-			abort_loading = true;
-		};
-	};
+	GRLIB_warehouse = greuh_liberation_savegame select 8;
 	_stats = greuh_liberation_savegame select 9;
 	stats_opfor_soldiers_killed = _stats select 0;
 	stats_opfor_killed_by_players = _stats select 1;
@@ -139,6 +135,30 @@ if ( !isNil "greuh_liberation_savegame" ) then {
 	resources_intel = greuh_liberation_savegame select 14;
 	GRLIB_player_scores = greuh_liberation_savegame select 15;
 
+	if ( GRLIB_force_load == 0 && typeName _side_west == "STRING" && typeName _side_east == "STRING" ) then {
+		if ( _side_west != GRLIB_mod_west || _side_east != GRLIB_mod_east ) exitWith {
+			abort_loading_msg = format [
+			"********************************\n
+			FATAL! - The savegame was made with a differents Modset (%1 / %2)\n\n
+			Loading Aborted to protect data integrity.\n
+			Correct the Modset or Wipe the savegame...\n
+			Current Modset: (%3 / %4)\n
+			*********************************", _side_west, _side_east, GRLIB_mod_west, GRLIB_mod_east];			
+			abort_loading = true;
+		};
+	};
+
+	if (typeName GRLIB_warehouse != "ARRAY") exitWith {
+		abort_loading_msg = format [
+		"********************************\n
+		FATAL! - The savegame is incompatible with this version of LRX\n\n
+		Loading Aborted to protect data integrity.\n
+		Wipe the savegame...\n
+		*********************************"];			
+		abort_loading = true;
+	};
+	if (abort_loading) exitWith {};
+
 	setDate [ GRLIB_date_year, GRLIB_date_month, GRLIB_date_day, time_of_day, 0];
 
 	stats_saves_loaded = stats_saves_loaded + 1;
@@ -176,15 +196,10 @@ if ( !isNil "greuh_liberation_savegame" ) then {
             _owner = _x select 4;
         };
 
-        if ([_nextclass, simple_objects] call F_itemIsInClass) then {
-            _nextbuilding = createSimpleObject [_nextclass, AGLtoASL _nextpos];
-        } else {
-			_nextbuilding = createVehicle [_nextclass, zeropos, [], 0, "CAN_COLLIDE"];
-			_nextbuilding allowDamage false;
-			_nextbuilding setVectorDirAndUp [[-cos _nextdir, sin _nextdir, 0] vectorCrossProduct surfaceNormal _nextpos, surfaceNormal _nextpos];
-			_nextbuilding setPosWorld _nextpos;
-        };
-
+		_nextbuilding = createVehicle [_nextclass, zeropos, [], 0, "CAN_COLLIDE"];
+		_nextbuilding allowDamage false;		
+		_nextbuilding setVectorDirAndUp [_nextdir select 0, _nextdir select 1];
+		_nextbuilding setPosWorld _nextpos;
 		_buildings_created pushback _nextbuilding;
 
 		if (!(_nextclass in GRLIB_Ammobox_keep)) then {
@@ -296,7 +311,7 @@ if ( !isNil "greuh_liberation_savegame" ) then {
             _nextbuilding setObjectTextureGlobal [0, getMissionPath "res\splash_libe2.paa"];
         };
 
-		if (_nextclass == "Land_ClutterCutter_large_F") then {
+		if (_nextclass == land_cutter_typename) then {
 			{_x hideObjectGlobal true} forEach (nearestTerrainObjects [_nextpos, GRLIB_clutter_cutter, 20]);
 		};
 
@@ -304,13 +319,16 @@ if ( !isNil "greuh_liberation_savegame" ) then {
             _nextbuilding addMPEventHandler ["MPKilled", {_this spawn kill_manager}];
 		};
 
+		if (_nextclass == Warehouse_typename) then {
+			[_nextbuilding] call warehouse_init_remote_call;
+		};
         //diag_log format [ "--- LRX Load Game %1 loaded at %2.", typeOf _nextbuilding, time];
 	} foreach (_s1 + _s2 + _s3);
+	sleep 1;
 
-	sleep 3;
 	{ 
 		_allow_damage = true;
-		if ( (typeOf _x) in [FOB_typename, FOB_outpost, FOB_sign, playerbox_typename] ) then {
+		if ( (typeOf _x) in [FOB_typename,FOB_outpost,FOB_sign,Warehouse_typename,playerbox_typename] ) then {
 			_x addEventHandler ["HandleDamage", { 0 }];
 			_allow_damage = false;
 		};
@@ -319,6 +337,7 @@ if ( !isNil "greuh_liberation_savegame" ) then {
 		};
 		if ( _allow_damage ) then { _x allowDamage true };
 	} foreach _buildings_created;
+	sleep 1;
 
 	diag_log format [ "--- LRX Load Game finish at %1", time ];
 } else {
@@ -345,19 +364,18 @@ if ( count GRLIB_vehicle_to_military_base_links == 0 ) then {
 		};
 	} foreach _classnames_to_check;
 };
+
+{
+	if (count (_x nearObjects [FOB_outpost, 20]) > 0) then { GRLIB_all_outposts pushBack _x };
+} forEach GRLIB_all_fobs;
+
 publicVariable "GRLIB_garage";
+publicVariable "GRLIB_warehouse";
 publicVariable "blufor_sectors";
 publicVariable "GRLIB_all_fobs";
+publicVariable "GRLIB_all_outposts";
 publicVariable "GRLIB_mobile_respawn";
 publicVariable "GRLIB_vehicle_to_military_base_links";
 publicVariable "GRLIB_permissions";
 publicVariable "GRLIB_player_scores";
 save_is_loaded = ([] call F_getValid); publicVariable "save_is_loaded";
-if (abort_loading) exitWith { abort_loading_msg = format [
-	"********************************\n
-	FATAL! - This Savegame was made with a differents Modset (%1 / %2)\n\n
-	Loading Aborted to protect data integrity.\n
-	Correct the Modset or Wipe the savegame..\n
-	Current Modset: (%3 / %4)\n
-	*********************************", _side_west, _side_east, GRLIB_mod_west, GRLIB_mod_east];
-};

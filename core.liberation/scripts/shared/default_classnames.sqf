@@ -8,6 +8,7 @@ FOB_outpost = "Land_BagBunker_Tower_F";
 FOB_box_outpost = "Land_Cargo10_grey_F";
 FOB_sign = "SignAd_Sponsor_F";
 Radio_tower = "Land_Communication_F";
+Warehouse_typename = "Land_Warehouse_03_F";
 Arsenal_typename = "B_supplyCrate_F";
 Box_Weapon_typename = "Box_NATO_Wps_F";
 Box_Ammo_typename = "Box_NATO_Ammo_F";
@@ -40,7 +41,8 @@ crewman_classname = "B_crew_F";
 pilot_classname = "B_Helipilot_F";
 PAR_Medikit = "Medikit";
 PAR_AidKit = "FirstAidKit";
-A3W_BoxWps = "Box_East_Wps_F";
+basic_weapon_typename = "Box_East_Wps_F";
+land_cutter_typename = "Land_ClutterCutter_large_F";
 canister_fuel_typename = "Land_CanisterFuel_Red_F";
 GRLIB_sar_wreck = "Land_Wreck_Heli_Attack_01_F";
 GRLIB_sar_fire = "test_EmptyObjectForFireBig";
@@ -48,6 +50,7 @@ civilians = ["C_man_1"];
 civilian_vehicles = ["C_SUV_01_F"];
 SHOP_Man = "C_Man_formal_1_F";
 SELL_Man = "C_Story_Mechanic_01_F";
+WRHS_Man = "B_RangeMaster_F";
 uavs = [];
 boats_west = [];
 opfor_boats = [];
@@ -92,6 +95,7 @@ buildings_default = [
 	["Land_SandbagBarricade_01_hole_F",0,0,0,GRLIB_perm_log],
 	["Land_SandbagBarricade_01_half_F",0,0,0,GRLIB_perm_log],
 	["Land_SM_01_shed_F",0,0,0,GRLIB_perm_max],
+	[Warehouse_typename,0,0,0,0],
 	["Land_Hangar_F",0,0,0,GRLIB_perm_max],
 	["Land_Medevac_house_V1_F",0,0,0,GRLIB_perm_tank],
 	["Land_Medevac_HQ_V1_F",0,0,0,GRLIB_perm_air],
@@ -118,16 +122,11 @@ buildings_default = [
 	["Land_CampingTable_F",0,0,0,GRLIB_perm_tank],
 	["MapBoard_altis_F",0,0,0,GRLIB_perm_tank],
 	["Land_Metal_rack_Tall_F",0,0,0,GRLIB_perm_tank],
-	["PortableHelipadLight_01_blue_F",0,0,0,GRLIB_perm_tank],
-	["PortableHelipadLight_01_red_F",0,0,0,GRLIB_perm_tank],
-	["PortableHelipadLight_01_white_F",0,0,0,GRLIB_perm_tank],
-	["PortableHelipadLight_01_green_F",0,0,0,GRLIB_perm_tank],
-	["PortableHelipadLight_01_yellow_F",0,0,0,GRLIB_perm_tank],
 	["Land_DieselGroundPowerUnit_01_F",0,0,0,GRLIB_perm_tank],
 	["Land_Pallet_MilBoxes_F",0,0,0,GRLIB_perm_tank],
 	["Land_PaperBox_open_full_F",0,0,0,GRLIB_perm_tank],
 	["Land_CzechHedgehog_01_new_F",0,0,0,GRLIB_perm_inf],
 	["Land_ConcreteHedgehog_01_F",0,0,0,GRLIB_perm_log],
 	["Land_DragonsTeeth_01_4x2_old_redwhite_F",0,0,0,GRLIB_perm_tank],
-	["Land_ClutterCutter_large_F",0,0,0,GRLIB_perm_inf]
+	[land_cutter_typename,0,0,0,GRLIB_perm_inf]
 ];

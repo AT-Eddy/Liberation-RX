@@ -31,7 +31,7 @@ repair_offroad = "vn_b_wheeled_m54_repair_airport";
 waterbarrel_typename = "Land_WaterBottle_01_stack_F";
 fuelbarrel_typename = "Land_vn_metalbarrel_f";
 foodbarrel_typename = "Land_FoodSacks_01_large_brown_idap_F";
-A3W_BoxWps = "Land_vn_pavn_weapons_stack1";
+basic_weapon_typename = "Land_vn_pavn_weapons_stack1";
 chimera_vehicle_overide = [
   ["B_Heli_Light_01_F",  "vn_b_air_oh6a_01"],
   ["B_Heli_Transport_01_F", "vn_b_air_uh1d_02_04"]
@@ -100,6 +100,8 @@ light_vehicles = [
 	// Boat
 	["vn_o_boat_01_02",1,10,1,0],
 	["vn_o_boat_01_mg_02",1,25,1,GRLIB_perm_inf],
+	["vn_b_boat_12_03",10,200,1,GRLIB_perm_inf],
+	["vn_b_boat_13_03",15,250,1,GRLIB_perm_inf],
 	["vn_b_boat_06_01",20,400,20,GRLIB_perm_tank],
 	["vn_b_boat_05_01",20,400,20,GRLIB_perm_tank],
 	// Land
@@ -110,8 +112,8 @@ light_vehicles = [
 	["vn_b_wheeled_m151_mg_04",3,75,2,GRLIB_perm_log],
 	["vn_b_wheeled_m151_mg_02",3,100,2,GRLIB_perm_log],
 	["vn_b_wheeled_m151_mg_03",3,125,2,GRLIB_perm_log],
-	["vn_b_wheeled_m54_01",3,100,3,GRLIB_perm_log],
-	["vn_b_wheeled_m54_02",4,150,4,GRLIB_perm_tank]
+	["vn_b_wheeled_m54_01",3,100,3,0],
+	["vn_b_wheeled_m54_02",4,150,4,GRLIB_perm_log]
 ];
 
 heavy_vehicles = [
@@ -178,7 +180,10 @@ static_vehicles_AI = [
 ];
 
 support_vehicles_west = [
-	["vn_i_air_ch34_01_02",5,300,15,GRLIB_perm_tank]
+	["vn_i_air_ch34_01_02",5,300,15,GRLIB_perm_tank],
+	["vn_b_wheeled_m54_repair",5,250,20,GRLIB_perm_inf],
+	["vn_b_wheeled_m54_fuel",5,150,20,GRLIB_perm_inf],
+	["vn_b_wheeled_m54_ammo",5,300,20,GRLIB_perm_tank]
 ];
 
 buildings_west_overide = true;
@@ -268,6 +273,7 @@ uavs = [
 
 // Everything the AI troups should be able to resupply from
 ai_resupply_sources_west = [
+	"vn_b_wheeled_m54_ammo"
 ];
 
 // Everything the AI troups should be able to healing from
@@ -275,6 +281,7 @@ ai_healing_sources_west = [
 ];
 
 vehicle_rearm_sources_west = [
+	"vn_b_wheeled_m54_ammo"
 ];
 
 vehicle_big_units_west = [

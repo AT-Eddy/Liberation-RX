@@ -200,7 +200,7 @@ R3F_LOG_CFG_can_be_transported_cargo = R3F_LOG_CFG_can_be_transported_cargo +
 	[fuel_sling_typename, 25],
 	[ammo_sling_typename, 25],
 	[medic_sling_typename, 25],
-	[A3W_BoxWps, 7],
+	[basic_weapon_typename, 7],
 	["ReammoBox_F", 10],
 	["Box_NATO_Wps_F", 5],
 	["Box_NATO_Ammo_F", 5],
@@ -228,7 +228,7 @@ R3F_LOG_CFG_can_be_moved_by_player = R3F_LOG_CFG_can_be_moved_by_player +
 	fuel_sling_typename,
 	ammo_sling_typename,
 	medic_sling_typename,
-	A3W_BoxWps,
+	basic_weapon_typename,
 	"ReammoBox_F",
 	canister_fuel_typename,
 	"Land_RepairDepot_01_civ_F",
@@ -326,7 +326,6 @@ R3F_LOG_CFG_can_be_moved_by_player = R3F_LOG_CFG_can_be_moved_by_player +
 	"Land_CampingChair_V2_F",
 	"Land_CampingTable_F",
 	"Land_Metal_rack_Tall_F",
-	"Land_PortableHelipadLight_01_F",
 	"Land_DieselGroundPowerUnit_01_F",
 	"Land_Pallet_MilBoxes_F",
 	"Land_PaperBox_open_full_F"
@@ -367,7 +366,6 @@ R3F_LOG_CFG_can_be_transported_cargo = R3F_LOG_CFG_can_be_transported_cargo +
 	["Land_CampingChair_V2_F", 5],
 	["Land_CampingTable_F", 5],
 	["Land_Metal_rack_Tall_F", 5],
-	["Land_PortableHelipadLight_01_F", 1],
 	["Land_DieselGroundPowerUnit_01_F", 5],
 	["Land_Pallet_MilBoxes_F", 5],
 	["Land_PaperBox_open_full_F", 5]

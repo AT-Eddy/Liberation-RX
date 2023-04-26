@@ -1,4 +1,3 @@
-private _distfob = 100;
 private _distarsenal = 10;
 private _distredeploy = 20;
 private _distvehclose = 5;
@@ -34,15 +33,15 @@ while { true } do {
 	GRLIB_player_is_menuok = [] call is_menuok;
 	if (GRLIB_player_is_menuok) then {
 		_fobdistance = round (player distance2D ([] call F_getNearestFob));
-		_near_outpost = (count (player nearObjects [FOB_outpost, _distfob]) > 0);
+		_near_outpost = ([player, "OUTPOST", GRLIB_fob_range] call F_check_near);
 		_outpost_owner = [getPosATL player] call F_getFobOwner;
 		_near_arsenal = [player, "ARSENAL", _distarsenal, true] call F_check_near;
-		_near_spawn = ([player, "SPAWNT", _distvehclose, true] call F_check_near || [player, "SPAWNV", _distvehclose, true] call F_check_near);
+		_near_spawn = ([player, "SPAWNT", _distarsenal, true] call F_check_near || [player, "SPAWNV", _distvehclose, true] call F_check_near);
 		_near_fobbox = player nearEntities [[FOB_box_typename, FOB_truck_typename, FOB_box_outpost], _distvehclose];
 		_near_fuel = [player, "FUEL", _distvehclose, false] call F_check_near;
 		_near_repair = [player, "REPAIR", _distvehclose, false] call F_check_near;
 		_near_atm = [player, "ATM", _distvehclose, true] call F_check_near;
-		_near_lhd = [player, "LHD", GRLIB_sector_size] call F_check_near;
+		_near_lhd = (player distance2D lhd < GRLIB_fob_range);
 		_my_dog = player getVariable ["my_dog", nil];
 		_my_squad = player getVariable ["my_squad", nil];
 		_idact_id = 0;
@@ -60,7 +59,6 @@ while { true } do {
 				_id_actions set [_idact_id, -1];
 			};
 		};
-
 
 		// Dog - Actions
 		_idact_id = _idact_id + 1;
@@ -230,7 +228,7 @@ while { true } do {
 		// Arsenal
 		_idact_id = _idact_id + 1;
 		_idact_num = _id_actions select _idact_id;
-		if (GRLIB_enable_arsenal && (_near_arsenal || _near_lhd) ) then {
+		if (GRLIB_enable_arsenal && (_near_arsenal || _near_lhd) && LRX_arsenal_init_done) then {
 			if (_idact_num == -1) then {
 				_idact = player addAction ["<t color='#FFFF00'>" + localize "STR_ARSENAL_ACTION" + "</t> <img size='1' image='res\ui_arsenal.paa'/>","scripts\client\actions\open_arsenal.sqf","",-500,true,true,"","build_confirmed == 0"];
 				_id_actions set [_idact_id, _idact];
@@ -245,7 +243,7 @@ while { true } do {
 		// Virtual Garage
 		_idact_id = _idact_id + 1;
 		_idact_num = _id_actions select _idact_id;
-		if (_fobdistance > 15 && _fobdistance < _distfob && !_near_outpost && !_near_lhd && [player] call F_getScore >= GRLIB_perm_inf ) then {
+		if (_fobdistance > 15 && _fobdistance < GRLIB_fob_range && !_near_outpost && !_near_lhd && [player] call F_getScore >= GRLIB_perm_inf ) then {
 			if ( _idact_num == -1 ) then {
 				_idact = player addAction ["<t color='#0080FF'>" + localize "STR_VIRTUAL_GARAGE" + "</t> <img size='1' image='res\ui_veh.paa'/>","addons\VIRT\virtual_garage.sqf","",-984,false,true,"","build_confirmed == 0"];
 				_id_actions set [_idact_id, _idact];
@@ -260,7 +258,7 @@ while { true } do {
 		// Build Menu
 		_idact_id = _idact_id + 1;
 		_idact_num = _id_actions select _idact_id;
-		if (_fobdistance < _distfob && !_near_lhd && ( ([player, 3] call fetch_permission) || (player == ([] call F_getCommander) || [] call is_admin)) ) then {
+		if (_fobdistance < GRLIB_fob_range && !_near_lhd && ( ([player, 3] call fetch_permission) || (player == ([] call F_getCommander) || [] call is_admin)) ) then {
 			if ( _idact_num == -1 ) then {
 				_idact = player addAction ["<t color='#FFFF00'>" + localize "STR_BUILD_ACTION" + "</t> <img size='1' image='res\ui_build.paa'/>","scripts\client\build\open_build_menu.sqf","",-985,false,true,"","build_confirmed == 0"];
 				_id_actions set [_idact_id, _idact];
@@ -275,7 +273,7 @@ while { true } do {
 		// Squad Management
 		_idact_id = _idact_id + 1;
 		_idact_num = _id_actions select _idact_id;
-		if ((leader group player == player) && (count units group player > 1) && (_fobdistance < _distfob || _near_lhd) ) then {
+		if ((leader group player == player) && (count units group player > 1) && (_fobdistance < GRLIB_fob_range || _near_lhd) ) then {
 			if ( _idact_num == -1 ) then {
 				_idact = player addAction ["<t color='#80FF80'>" + localize "STR_SQUAD_MANAGEMENT_ACTION" + "</t> <img size='1' image='" + _icon_grp + "'/>","scripts\client\ui\squad_management.sqf","",-760,false,true,"","build_confirmed == 0"];
 				_id_actions set [_idact_id, _idact];
@@ -305,7 +303,7 @@ while { true } do {
 		// Secondary Objectives
 		_idact_id = _idact_id + 1;
 		_idact_num = _id_actions select _idact_id;
-		if (count GRLIB_all_fobs > 0 && ( GRLIB_endgame == 0 ) && (_fobdistance < _distredeploy || _near_lhd) && (!_near_outpost) && ([player] call F_getScore >= GRLIB_perm_air ||  player == ( [] call F_getCommander ) || [] call is_admin) ) then {
+		if (count GRLIB_all_fobs > 0 && ( GRLIB_endgame == 0 ) && (_fobdistance < _distvehclose || _near_lhd) && (!_near_outpost) && ([player] call F_getScore >= GRLIB_perm_air ||  player == ( [] call F_getCommander ) || [] call is_admin) ) then {
 			if ( _idact_num == -1 ) then {
 				_idact = player addAction ["<t color='#FFFF00'>" + localize "STR_SECONDARY_OBJECTIVES" + "</t>","scripts\client\ui\secondary_ui.sqf","",-995,false,true,"","build_confirmed == 0"];
 				_id_actions set [_idact_id, _idact];
@@ -425,23 +423,8 @@ while { true } do {
 			};
 		};
 
-		// Recycle PortableHelipadLight (simple objects)
-		_idact_id = _idact_id + 1;
-		_idact_num = _id_actions select _idact_id;
-		if (!_near_lhd && _fobdistance < _distfob && cursorObject isKindof "Land_PortableHelipadLight_01_F") then {
-			if ( _idact_num == -1 ) then {
-				_idact = player addAction ["<t color='#FFFF00'>" + localize "STR_RECYCLE_MANAGER" + "</t> <img size='1' image='res\ui_recycle.paa'/>",{deleteVehicle cursorObject},"",-950,false,true,"","[cursorObject] call is_recyclable",_distvehclose];
-				_id_actions set [_idact_id, _idact];
-			};
-		} else {
-			if ( _idact_num != -1 ) then {
-				player removeAction _idact_num;
-				_id_actions set [_idact_id, -1];
-			};
-		};
-
 		// FOB Sign Actions
-		if (!_near_lhd && _fobdistance < _distfob && cursorObject isKindof FOB_sign) then {
+		if (!_near_lhd && _fobdistance < GRLIB_fob_range && cursorObject isKindof FOB_sign) then {
 			if (count (actionIDs cursorObject) == 0) then {
 				cursorObject addAction ["<t color='#FFFFFF'>" + "-= Hall of Fame =-" + "</t>",{([] call F_hof_msg) spawn BIS_fnc_dynamicText},"",999,true,true,"","GRLIB_player_is_menuok",5];
 				cursorObject addAction ["<t color='#FFFFFF'>" + localize "STR_READ_ME" + "</t>",{createDialog "liberation_notice"},"",998,true,true,"","GRLIB_player_is_menuok",5];

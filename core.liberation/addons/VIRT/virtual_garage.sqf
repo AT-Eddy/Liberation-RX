@@ -16,17 +16,17 @@ load_veh = 0;
 createDialog "VIRT_vehicle_garage";
 waitUntil { dialog };
 
-while { dialog && alive player } do {
-	_display = findDisplay 2301;
-	ctrlEnable [ 120, false ];
-	ctrlEnable [ 121, false ];
+private _display = findDisplay 2301;
+ctrlEnable [ 120, false ];
+ctrlEnable [ 121, false ];
 
+while { dialog && alive player } do {
 	if ( _refresh ) then {
 		_refresh = false;
 
 		_myveh_lst = [getPosATL player nearEntities [["LandVehicle","Air","Ship",playerbox_typename], 150], {
 			alive _x && (count (crew _x) == 0 || typeOf _x in uavs) &&
-			!([_x, "LHD", GRLIB_sector_size] call F_check_near) &&
+			(_x distance2D lhd > GRLIB_fob_range) &&
 			_x getVariable ["GRLIB_vehicle_owner", ""] == _guid &&
 			!(typeOf _x in _recycleable_blacklist)
 		}] call BIS_fnc_conditionalSelect;
@@ -69,7 +69,10 @@ while { dialog && alive player } do {
 
 	if ( !isNil "GRLIB_garage_in_use" ) then {
 		hintSilent "Garage is busy !!\nPlease wait...";
+		ctrlEnable [ 120, false ];
+		ctrlEnable [ 121, false ];
 		_refresh = true;
+		sleep 1;
 	} else {
 		hintSilent "";
 

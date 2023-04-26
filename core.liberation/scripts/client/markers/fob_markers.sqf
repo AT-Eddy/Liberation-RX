@@ -11,19 +11,18 @@ while { true } do {
 		_markers = [];
 		for [ {_idx=0},{_idx < count GRLIB_all_fobs},{_idx=_idx+1}] do {
 			_fobpos = GRLIB_all_fobs select _idx;
-			_near_outpost = (count (_fobpos nearObjects [FOB_outpost, 50]) > 0);
-
-			_marker = createMarkerLocal [format ["fobmarker%1",_idx], markers_reset];			
+			_near_outpost = (_fobpos in GRLIB_all_outposts);
+			_marker = createMarkerLocal [format ["fobmarker%1",_idx], markers_reset];
 			if (_near_outpost) then {
 				_marker setMarkerTypeLocal "b_support";
 				_marker setMarkerSizeLocal [ 1.2, 1.2 ];
 				_marker setMarkerTextLocal format ["Outpost %1",military_alphabet select _idx];
-				_marker setMarkerColorLocal "ColorYellow";	
+				_marker setMarkerColorLocal "ColorYellow";
 			} else {
 				_marker setMarkerTypeLocal "b_hq";
 				_marker setMarkerSizeLocal [ 1.7, 1.7 ];
 				_marker setMarkerTextLocal format ["FOB %1",military_alphabet select _idx];
-				_marker setMarkerColorLocal "ColorYellow";		
+				_marker setMarkerColorLocal "ColorYellow";
 			};
 			_marker setMarkerPosLocal _fobpos;
 			_markers pushback _marker;

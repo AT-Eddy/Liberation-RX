@@ -40,10 +40,12 @@ _unit addEventHandler ["InventoryOpened", {
 	params ["_unit", "_container"];
 	_ret = false;
 	playsound "ZoomIn";
-	if ((typeOf _container in support_box_noArsenal) || (!alive _container)) exitWith { _ret };
-	if (!([_unit, _container] call is_owner) || locked _container > 1) then {
-		closeDialog 106;
-		_ret = true;
+	if (GRLIB_permission_vehicles) then {
+		if ((typeOf _container in support_box_noArsenal) || (!alive _container)) exitWith { _ret };
+		if (!([_unit, _container] call is_owner) || locked _container > 1) then {
+			closeDialog 106;
+			_ret = true;
+		};
 	};
 	_ret;
 }];
@@ -67,7 +69,7 @@ _unit addEventHandler ["FiredMan",	{
 	//diag_log format ["DBG: %1", _this];
 
 	// No mines in the base zone (Chimera + FOB)
-	if (([_unit, "FOB", GRLIB_fob_range] call F_check_near || [_unit, "LHD", 500] call F_check_near) && _weapon == "Put") then { deleteVehicle _projectile };
+	if (([_unit, "LHD", GRLIB_fob_range] call F_check_near) && _weapon == "Put") then { deleteVehicle _projectile };
 
 	// Sticky bomb
 	if (_ammo in sticky_bombs_typename && _weapon == "Put") then {
@@ -124,7 +126,7 @@ if (_unit == player) then {
 		1 fadeSound ( round desired_vehvolume / 100.0 );
 		NRE_EarplugsActive = 1;
 		[player, "hide"] remoteExec ["dog_action_remote_call", 2];
-		if (GRLIB_thermic == 0 || (GRLIB_thermic == 1 && !(daytime > GRLIB_nights_start || daytime < GRLIB_nights_stop))) then {
+		if (GRLIB_thermic == 0 || (GRLIB_thermic == 1 && !(call is_night))) then {
 			_vehicle disableTIEquipment true;
 		} else {
 			_vehicle disableTIEquipment false;

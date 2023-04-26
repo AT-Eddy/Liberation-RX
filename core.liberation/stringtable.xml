@@ -16,7 +16,7 @@
 		<Key ID="STR_MISSION_MOTD">
 			<Original>It should not be too easy...</Original>
 			<Russian>Это не должно быть слишком просто...</Russian>
-			<French>Ca dois pas être trop facile...</French>
+			<French>Ça doit pas être trop facile...</French>
 			<Chinesesimp>经历漫漫的战斗历程才终能获得解放</Chinesesimp>
 			<Chinese>經歷漫漫的戰鬥歷程才終能獲得解放</Chinese>
 			<Portuguese>Não deve ser muito fácil...</Portuguese>
@@ -231,6 +231,10 @@
 			<Japanese>-- 下降 </Japanese>
 			<Portuguese>-- Descer</Portuguese>
 			<Czech>-- Posunout dolů</Czech>
+		</Key>
+		<Key ID="STR_MODE">
+			<Original>-- Follow terrain</Original>
+			<French>-- Suivre relief</French>		
 		</Key>
 		<Key ID="STR_CANCEL">
 			<Original>-- Cancel</Original>
@@ -996,6 +1000,14 @@
 			<Portuguese>%1 %2 foi destruído!</Portuguese>
 			<Czech>%1 %2 bylo zničeno!</Czech>
 		</Key>
+		<Key ID="STR_NOTIFICATION_FOBREPACK_TITLE">
+			<Original>%1 FOLDED</Original>
+			<French>%1 REPLIÉ</French>
+		</Key>
+		<Key ID="STR_NOTIFICATION_FOBREPACK_TEXT">
+			<Original>%1 %2 has been folded!</Original>
+			<French>%1 %2 a été repliée !</French>		
+		</Key>		
 		<Key ID="STR_NOTIFICATION_BATTLEGROUP_TITLE">
 			<Original>HOSTILE FORCES INCOMING</Original>
 			<French>FORCES HOSTILES EN APPROCHE</French>
@@ -3326,6 +3338,18 @@
 			<Portuguese>Random</Portuguese>
 			<Czech>Náhodný</Czech>
 		</Key>
+		<Key ID="STR_WEATHER_PARAM5">
+			<Original>Dynamic (WIP)</Original>
+			<French>Dynamic (WIP)</French>
+			<German>Dynamic (WIP)</German>
+			<Spanish>Dynamic (WIP)</Spanish>
+			<Russian>Dynamic (WIP)</Russian>
+			<Chinesesimp>Dynamic (WIP)</Chinesesimp>
+			<Chinese>Dynamic (WIP)</Chinese>
+			<Japanese>Dynamic (WIP)</Japanese>
+			<Portuguese>Dynamic (WIP)</Portuguese>
+			<Czech>Dynamic (WIP)</Czech>
+		</Key>
 		<Key ID="STR_REPAIRING">
 			<Original>Repairing</Original>
 			<French>Réparation</French>
@@ -5001,8 +5025,12 @@
 			<Portuguese>O tipo de Huron</Portuguese>
 			<Czech>FOB Kontejnér</Czech>
 		</Key>
+		<Key ID="STR_HINT_FOB_WRONG_OWNER">
+			<Original>You are NOT the Owner of the FOB!</Original>
+			<French>Vous n'êtes PAS le propriétaire de la FOB!</French>		
+		</Key>
 		<Key ID="STR_HINT_FOBS_EXCEEDED">
-			<Original>You are not allowed to deploy more than %1 FOBs at the same time.</Original>
+			<Original>You are NOT allowed to deploy more than %1 FOBs at the same time.</Original>
 			<French>Vous n'êtes pas autorisé à déployer plus de %1 FOBs en même temps.</French>
 			<German>Sie haben nicht die Erlaubnis mehr als %1 FOBs zur selben Zeit zu errichten.</German>
 			<Russian>Вам не разрешено развертывать более %1 FOB одновременно.</Russian>
@@ -6101,24 +6129,14 @@
 			<Czech>AMMO</Czech>
 		</Key>
 		<Key ID="STR_AMMO_SELL">
-			<Original>%1\nScore + 50 Pts!</Original>
-			<Russian>%1\nScore + 50 Pts!</Russian>
-			<French>%1\nScore + 50 Pts!</French>
-			<Japanese>%1\nスコア + 50 ポイント！</Japanese>
-			<Chinesesimp>%1\n奖励 + 50 军功点！</Chinesesimp>
-			<Chinese>%1\n獎勵 + 50 軍功點！</Chinese>
-			<Portuguese>%1\nPontuação + 50 Pts!</Portuguese>
-			<Czech>%1\nSkóre + 50 bodů!</Czech>
-		</Key>
-		<Key ID="STR_AMMO_SELL2">
-			<Original>%1\nBonus Score + 10 Pts!</Original>
-			<Russian>%1\nBonus Score + 10 Pts!</Russian>
-			<French>%1\nScore + 10 Pts!</French>
-			<Japanese>%1\nボーナススコア + 10 ポイント！</Japanese>
-			<Chinesesimp>%1\n奖励 + 10 军功点！</Chinesesimp>
-			<Chinese>%1\n獎勵 + 10 軍功點！</Chinese>
-			<Portuguese>%1\nPontuação Bônus + 10 Pts!</Portuguese>
-			<Czech>%1\nBonusové skóre + 10 bodů!</Czech>
+			<Original>%1\nScore + %2 Pts!</Original>
+			<Russian>%1\nScore + %2 Pts!</Russian>
+			<French>%1\nScore + %2 Pts!</French>
+			<Japanese>%1\nスコア + %2 ポイント！</Japanese>
+			<Chinesesimp>%1\n奖励 + %2 军功点！</Chinesesimp>
+			<Chinese>%1\n獎勵 + %2 軍功點！</Chinese>
+			<Portuguese>%1\nPontuação + %2 Pts!</Portuguese>
+			<Czech>%1\nSkóre + %2 bodů!</Czech>
 		</Key>
 
 		<!-- do_refuel.sqf -->
@@ -8073,6 +8091,42 @@
 			<Chinese>&lt;t align='center'&gt;出售 %1&lt;br/&gt;以獲得 %2 彈藥。 &lt;br/&gt;你確定嗎？ &lt;/t&gt;</Chinese>
 			<Portuguese>&lt;t align='center'&gt;Vender %1&lt;br/&gt;for %2 AMMO.&lt;br/&gt;Tem a certeza ?&lt;/t&gt;</Portuguese>
 			<Czech>&lt;t align='center'&gt;Koupit %1&lt;br/&gt;za %2 AMMO.&lt;br/&gt;Jsi si jistý ?&lt;/t&gt;</Czech>
+		</Key>
+	</Package>
+
+	<!-- LRX Warehouse-->
+	<Package name="LRX_WAREHOUSE">
+		<Key ID="STR_WAREHOUSE_SHOP">
+			<Original>-- WareHouse --</Original>
+			<French>-- Entrepôt --</French>
+		</Key>
+		<Key ID="STR_WAREHOUSE_ENTER">
+			<Original>-- ENTER WAREHOUSE</Original>
+		</Key>
+		<Key ID="STR_WAREHOUSE_ACTION1">
+			<Original>LOAD</Original>
+			<French>CHARGER</French>
+
+		</Key>
+		<Key ID="STR_WAREHOUSE_ACTION2">
+			<Original>UNLOAD</Original>
+			<French>DECHARGER</French>
+		</Key>
+		<Key ID="STR_WAREHOUSE_LOAD">
+			<Original>STORE GOODS</Original>
+			<French>STOCKER MARCHANDISES</French>
+		</Key>
+		<Key ID="STR_WAREHOUSE_LOAD_MSG">
+			<Original>&lt;t align='center'&gt;Unload %1 to Warehouse&lt;br/&gt;for %2 AMMO.&lt;br/&gt;Are you sure ?&lt;/t&gt;</Original>
+			<French>&lt;t align='center'&gt;Deposer %1 à l'Entrepôt&lt;br/&gt;pour %2 AMMO.&lt;br/&gt;Êtes-vous sûr ?&lt;/t&gt;</French>
+		</Key>
+		<Key ID="STR_WAREHOUSE_UNLOAD">
+			<Original>TAKE GOODS</Original>
+			<French>PRENDRE MARCHANDISES</French>
+		</Key>
+		<Key ID="STR_WAREHOUSE_UNLOAD_MSG">
+			<Original>&lt;t align='center'&gt;Take %1 from Warehouse&lt;br/&gt;for %2 AMMO.&lt;br/&gt;Are you sure ?&lt;/t&gt;</Original>
+			<French>&lt;t align='center'&gt;Prendre %1 de l'Entrepôt&lt;br/&gt;pour %2 AMMO.&lt;br/&gt;Êtes-vous sûr ?&lt;/t&gt;</French>
 		</Key>
 	</Package>
 

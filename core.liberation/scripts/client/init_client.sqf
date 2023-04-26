@@ -133,6 +133,7 @@ if (!GRLIB_ACE_enabled) then {
 [] execVM "addons\SHOP\traders_shop_init.sqf";
 [] execVM "addons\TAXI\taxi_init.sqf";
 [] execVM "addons\JKB\JKB_init.sqf";
+[] execVM "addons\WHS\warehouse_init.sqf";
 
 // Init Tips Tables from XML
 GREUH_TipsText = [];
@@ -161,11 +162,11 @@ addMissionEventHandler ["Draw3D",{
 	};
 
 	private _near_sign = nearestObjects [player, [FOB_sign], 5];
-	if (count (_near_sign) > 0 && !([player, "LHD", GRLIB_sector_size] call F_check_near)) then {
+	if (count (_near_sign) > 0 && (player distance2D lhd > GRLIB_fob_range)) then {
 		private _sign = _near_sign select 0;
 		private _gid = _sign getVariable ["GRLIB_vehicle_owner", "public"];
 		private _type = "FOB";
-		private _near_outpost = (count ((getPosATL _sign) nearObjects [FOB_outpost, 50]) > 0);
+		private _near_outpost = ([_sign, "OUTPOST", 30] call F_check_near);
 		if (_near_outpost) then { _type = "Outpost" };
 		private _name = "- LRX";
 		if (_gid != "public") then {

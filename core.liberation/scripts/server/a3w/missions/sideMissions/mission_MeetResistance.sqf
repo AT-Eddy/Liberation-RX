@@ -7,11 +7,12 @@ if (!isServer) exitwith {};
 if (!isNil "GRLIB_A3W_Mission_MR") exitWith {};
 #include "sideMissionDefines.sqf"
 
-private ["_nbUnits", "_townName",
-		 "_aiGroupRes", "_buildingpositions",
-		 "_tent1", "_chair1", "_chair2", "_fire1",
-		 "_box1", "_box2",
-		 "_veh1", "_veh2", "_gunner"];
+private [
+	"_nbUnits", "_townName", "_aiGroupRes", "_buildingpositions",
+	"_tent1", "_chair1", "_chair2", "_fire1",
+	"_box1", "_box2",
+	"_veh1", "_veh2", "_gunner"
+];
 
 _setupVars =
 {
@@ -35,8 +36,8 @@ _setupObjects =
 	_missionPos = (markerPos _missionLocation vectorAdd [([[-50,0,50], 20] call F_getRND), ([[-50,0,50], 20] call F_getRND), 0]);
 
 	// spawn some crates in the middle of town (Town marker position)
-	_box1 = [A3W_BoxWps, _missionPos, true] call boxSetup;
-	_box2 = [A3W_BoxWps, _missionPos, true] call boxSetup;
+	_box1 = [basic_weapon_typename, _missionPos, true] call boxSetup;
+	_box2 = [basic_weapon_typename, _missionPos, true] call boxSetup;
 
 	// create some atmosphere around the crates 8)
 	_tent1 = createVehicle ["Land_cargo_addon02_V2_F", _missionPos, [], 3, "None"];

@@ -6,15 +6,19 @@ params [
 ];
 
 private _ret = false;
+private _only_outpost = false;
 private _classlist = [];
+private _obj_list = [];
 private _near = [];
-private _vehpos = getPosATL _vehicle;
+private _vehpos = _vehicle;
+if (typeName _vehicle == "OBJECT" ) then {
+	_vehpos = getPosATL _vehicle;
+};
 
 if (isNil "_list") exitWith {_ret};
 
 switch ( _list ) do {
-	case "LHD" : { _classlist = [lhd]; _includeFOB = false};	
-	case "FOB" : { _classlist = GRLIB_all_fobs; _includeFOB = false};
+	case "LHD" : { _classlist = [lhd]};	
 	case "SRV" : { _classlist = GRLIB_Marker_SRV};
 	case "ATM" : { _classlist = GRLIB_Marker_ATM};
 	case "FUEL" : { _classlist = GRLIB_Marker_FUEL};
@@ -29,26 +33,34 @@ switch ( _list ) do {
 	case "REAMMO_AI" : { _classlist = ai_resupply_sources};
 	case "REPAIR_AI" : { _classlist = vehicle_repair_sources};
 	case "REPAINT" : { _classlist = [repair_offroad, "Land_RepairDepot_01_civ_F"]};
+	default { _classlist = [] };
 };
 
-// Include FOB
+// Include FOB / Outpost
 if (_includeFOB) then {
-	if ((_vehpos distance2D ([] call F_getNearestFob)) <= (_dist * 2)) then { _ret = true };
+	if (_list == "OUTPOST") then { _only_outpost = true };
+	if ((_vehpos distance2D ([_vehpos, _only_outpost] call F_getNearestFob)) <= _dist) then { _ret = true };
 };
-
 if (_ret) exitWith {true};
+if (_list in ["FOB", "OUTPOST"]) exitWith {_ret};
 if (count(_classlist) == 0) exitWith {false};
 
 if (typeName (_classlist select 0) == "STRING") then {
 	// From Objects classname
-	_near = [ _vehpos nearEntities [_classlist, _dist], {
-	//_near = [ nearestObjects [_vehpos, _classlist, _dist], {
-		alive _x &&
-		( 
-			isNull (_x getVariable ["R3F_LOG_est_transporte_par", objNull]) || 
-			!(_x getVariable ['R3F_LOG_disabled', true])
-		)
-	}] call BIS_fnc_conditionalSelect;
+	_obj_list = _vehpos nearEntities [_classlist, _dist];
+	// if (count _obj_list == 0) then {
+	//	// powerfull but slow
+	// 	_obj_list = nearestObjects [_vehpos, _classlist, _dist];
+	// };
+	if (count _obj_list > 0) then {
+		_near = [ _obj_list, {
+			alive _x && getObjectType _x >= 8 &&
+			( 
+				isNull (_x getVariable ["R3F_LOG_est_transporte_par", objNull]) || 
+				!(_x getVariable ['R3F_LOG_disabled', true])
+			)
+		}] call BIS_fnc_conditionalSelect;
+	};
 } else {
 	// From Position
 	_near = _classlist select { (_vehpos distance2D _x) <= _dist };
