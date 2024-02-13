@@ -1,1 +1,0 @@
-(daytime > GRLIB_nights_start || daytime < GRLIB_nights_stop)
