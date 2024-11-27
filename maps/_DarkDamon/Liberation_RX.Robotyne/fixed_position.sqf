@@ -1,0 +1,4 @@
+GRLIB_Marker_ATM = [];
+GRLIB_Marker_SRV = [[8342.45,2881.82,0]];
+GRLIB_Marker_FUEL = [[8350.26,2878.58,0]];
+GRLIB_Marker_SHOP = [[8344.7,2879.15,0.0756531]];
