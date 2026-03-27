@@ -161,32 +161,7 @@ Have Fun !
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Mission available for
-
-+ Altis
-+ Malden
-+ Stratis (Air Carrier)
-+ Tanoa
-+ Enoch
-
-with CUP Terrain:
-
-+ Chernarus (+ Winter)
-+ Takistan
-+ Sarahni
-+ Sarahni South
-+ Utes
-
-+ Virolahti 7 (vt7)
-+ Isla Duala
-
-with GlobalMobilization
-
-+ Wefer Lingen
-
-with Operation Trebuchet
-
-+ Iberius
+## Mission available for more than 100 maps
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
