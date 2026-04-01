@@ -1,5 +1,5 @@
 GRLIB_map_modder = "Z@Warrior";
-GRLIB_save_key = "LRX_ZAGOR_SAVEGAME_PSK";	// change this value if you want different savegames on different map
+GRLIB_save_key = "LRX_ZAGORSK_KHOT_SAVEGAME_PSK";	// change this value if you want different savegames on different map
 GRLIB_sector_size = 800;
 GRLIB_spawn_min = 1500;
 GRLIB_spawn_max = 3000;
